@@ -149,6 +149,82 @@ function Linux.Create(config)
     FakeUI.Enabled = false
     FakeUI.ResetOnSpawn = false
 
+    local IntroScreen = Linux.Instance("Frame", {
+        Parent = LinuxUI,
+        BackgroundColor3 = Linux.Theme.Background,
+        Size = UDim2.new(1, 0, 1, 0),
+        Position = UDim2.new(0, 0, 0, 0),
+        ZIndex = 1000,
+        BorderSizePixel = 0
+    })
+
+    local IntroTitle = Linux.Instance("TextLabel", {
+        Parent = IntroScreen,
+        BackgroundTransparency = 1,
+        Size = UDim2.new(0, 0, 0, 50),
+        Position = UDim2.new(0.5, 0, 0.4, 0),
+        Font = Enum.Font.SourceSansBold,
+        Text = "Linux UI",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        TextSize = 50,
+        TextTransparency = 1,
+        TextXAlignment = Enum.TextXAlignment.Center,
+        AutomaticSize = Enum.AutomaticSize.X,
+        ZIndex = 1001
+    })
+
+    local LoadingBarFrame = Linux.Instance("Frame", {
+        Parent = IntroScreen,
+        BackgroundColor3 = Linux.Theme.Element,
+        Size = UDim2.new(0, 300, 0, 10),
+        Position = UDim2.new(0.5, -150, 0.5, 0),
+        ZIndex = 1001,
+        BorderSizePixel = 0
+    })
+
+    Linux.Instance("UICorner", {
+        Parent = LoadingBarFrame,
+        CornerRadius = UDim.new(1, 0)
+    })
+
+    local LoadingBarFill = Linux.Instance("Frame", {
+        Parent = LoadingBarFrame,
+        BackgroundColor3 = Linux.Theme.Accent,
+        Size = UDim2.new(0, 0, 1, 0),
+        ZIndex = 1002,
+        BorderSizePixel = 0
+    })
+
+    Linux.Instance("UICorner", {
+        Parent = LoadingBarFill,
+        CornerRadius = UDim.new(1, 0)
+    })
+
+    local function PlayIntro(callback)
+        local fadeInTitle = TweenInfo.new(1, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+        local moveTitle = TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local fillBar = TweenInfo.new(2, Enum.EasingStyle.Linear)
+        local fadeOut = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+
+        TweenService:Create(IntroTitle, fadeInTitle, {TextTransparency = 0}):Play()
+        TweenService:Create(IntroTitle, moveTitle, {Position = UDim2.new(0.5, 0, 0.35, 0)}):Play()
+
+        task.wait(0.5)
+
+        TweenService:Create(LoadingBarFill, fillBar, {Size = UDim2.new(1, 0, 1, 0)}):Play()
+
+        task.wait(2.5)
+
+        TweenService:Create(IntroScreen, fadeOut, {BackgroundTransparency = 1}):Play()
+        TweenService:Create(IntroTitle, fadeOut, {TextTransparency = 1}):Play()
+        TweenService:Create(LoadingBarFrame, fadeOut, {BackgroundTransparency = 1}):Play()
+        TweenService:Create(LoadingBarFill, fadeOut, {BackgroundTransparency = 1}):Play()
+
+        task.wait(0.5)
+        IntroScreen:Destroy()
+        callback()
+    end
+
     local tabWidth = config.TabWidth or 110
     local isMobile = InputService.TouchEnabled and not InputService.KeyboardEnabled
     local uiSize = isMobile and (config.SizeMobile or UDim2.fromOffset(300, 500)) or (config.SizePC or UDim2.fromOffset(550, 355))
@@ -161,7 +237,8 @@ function Linux.Create(config)
         Active = true,
         Draggable = true,
         ZIndex = 1,
-        BorderSizePixel = 0
+        BorderSizePixel = 0,
+        Visible = false
     })
 
     Linux.Instance("UICorner", {
@@ -1593,6 +1670,10 @@ function Linux.Create(config)
 
         return TabElements
     end
+
+    PlayIntro(function()
+        Main.Visible = true
+    end)
 
     return LinuxLib
 end
