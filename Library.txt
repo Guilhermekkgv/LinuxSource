@@ -388,9 +388,9 @@ function Linux.Create(config)
 
         local TitleFrame = Linux.Instance("Frame", {
             Parent = Content,
-            BackgroundColor3 = Linux.Theme.Background,
-            Size = UDim2.new(1, -tabWidth, 0, 30),
-            Position = UDim2.new(0, tabWidth, 0, 25),
+            BackgroundColor3 = Linux.Theme.Element,
+            Size = UDim2.new(1, 0, 0, 30),
+            Position = UDim2.new(0, 0, 0, 0),
             Visible = false,
             ZIndex = 3
         })
@@ -398,13 +398,14 @@ function Linux.Create(config)
         local TitleLabel = Linux.Instance("TextLabel", {
             Parent = TitleFrame,
             BackgroundTransparency = 1,
-            Size = UDim2.new(1, -10, 0, 30),
+            Size = UDim2.new(1, -10, 1, 0),
             Position = UDim2.new(0, 5, 0, 0),
             Font = Enum.Font.SourceSansBold,
             Text = config.Name,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             TextSize = 23,
             TextXAlignment = Enum.TextXAlignment.Left,
+            TextYAlignment = Enum.TextYAlignment.Center,
             ZIndex = 4
         })
 
