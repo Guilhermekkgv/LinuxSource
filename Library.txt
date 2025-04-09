@@ -204,7 +204,7 @@ function Linux.Create(config)
         Font = Enum.Font.SourceSans,
         Text = config.Subtitle or "Subtitle",
         TextColor3 = Color3.fromRGB(255, 0, 0),
-        TextSize = 14,
+        TextSize = 16,
         TextXAlignment = Enum.TextXAlignment.Left,
         AutomaticSize = Enum.AutomaticSize.X,
         ZIndex = 2
@@ -363,7 +363,7 @@ function Linux.Create(config)
                 Size = UDim2.new(0, 16, 0, 16),
                 Position = UDim2.new(0, 10, 0.5, -8),
                 Image = config.Icon.Image or "rbxassetid://10747384394",
-                ImageColor3 = Color3.fromRGB(150, 150, 150),
+                ImageColor3 = Color3.fromRGB(255, 255, 255),
                 ZIndex = 2
             })
         end
@@ -445,18 +445,12 @@ function Linux.Create(config)
                 tab.TitleFrame.Visible = false
                 tab.Button.BackgroundTransparency = 1
                 tab.Text.TextColor3 = Color3.fromRGB(150, 150, 150)
-                if tab.Icon then
-                    tab.Icon.ImageColor3 = Color3.fromRGB(150, 150, 150)
-                end
             end
             TabContent.Visible = true
             TitleFrame.Visible = true
             TabBtn.BackgroundTransparency = 0
             TabBtn.BackgroundColor3 = Linux.Theme.Element
             TabText.TextColor3 = Color3.fromRGB(255, 0, 0)
-            if TabIcon then
-                TabIcon.ImageColor3 = Color3.fromRGB(255, 0, 0)
-            end
             CurrentTab = tabIndex
         end
 
@@ -482,7 +476,7 @@ function Linux.Create(config)
             elementOrder = elementOrder + 1
             local BtnFrame = Linux.Instance("Frame", {
                 Parent = ElementContainer,
-                BackgroundColor3 = Linux.Theme.Element,
+                BackgroundColor3 = Linux.Theme.Accent,
                 Size = UDim2.new(1, -5, 0, 30),
                 ZIndex = 1,
                 LayoutOrder = elementOrder,
@@ -524,10 +518,7 @@ function Linux.Create(config)
             })
 
             Btn.MouseButton1Click:Connect(function()
-                TweenService:Create(BtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Linux.Theme.Accent}):Play()
                 spawn(function() Linux:SafeCallback(config.Callback) end)
-                wait(0.1)
-                TweenService:Create(BtnFrame, TweenInfo.new(0.1), {BackgroundColor3 = Linux.Theme.Element}):Play()
             end)
 
             return Btn
